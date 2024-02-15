@@ -12,5 +12,6 @@ public class Book {
     @Column(length = 50, nullable = false)
     private String title;
     private int price;
+    private String name;
     private int page;
 }
