@@ -11,32 +11,32 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class BookRestController {
+public class BookRestController { // <---- Ajax(JSON)---->View(JSP/Thymeleaf)
+
     @Autowired
     private BookService service;
 
-    @GetMapping("/books")
-    public List<Book> getList() {
-        return service.getList();
+    @GetMapping("/books") //  http://localhost:8081/api/books
+    public List<Book> getList(){
+        return service.getList(); // JSON
     }
-
-    @PostMapping("/books")
-    public Book register(@RequestBody Book book) {
+   // http://localhost:8081/api/books
+    @PostMapping("/books") //  JSON---@RequestBody---->Object
+    public Book register(@RequestBody Book book){
         return service.register(book);
     }
-
+   // http://localhost:8081/api/books/3
     @GetMapping("/books/{id}")
-    public ResponseEntity<?> getByBook(@PathVariable Long id) {
+    public ResponseEntity<?> getByBook(@PathVariable Long id){
         try {
             return new ResponseEntity<>(service.getById(id), HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>("Book not found with id: " + id, HttpStatus.NOT_FOUND);
         }//try
-
     }
 
+    // http://localhost:8081/api/books/1
     @PutMapping("/books/{id}")
-
     public ResponseEntity<Book> updateBook(@PathVariable Long id,
                                            @RequestBody Book requestBook) {
         try {
@@ -45,21 +45,20 @@ public class BookRestController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
-
-    }
+    }//
     @DeleteMapping("/books/{id}")
-
     public ResponseEntity<?> deleteBook(@PathVariable Long id) {
-
         try {
             service.getByDelete(id);
             return ResponseEntity.ok("Deleted book with id: " + id);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to delete book with id: " + id + ". Error: " + e.getMessage());
-
         }
-
     }
 
+    @GetMapping("/books/{title}/{name}") // books/Python/패스트
+    public Book findByTitleAndName(@PathVariable String title, @PathVariable String name){
+         return service.findByTitleAndName(title, name);
+    }
 }
