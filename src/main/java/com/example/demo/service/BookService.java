@@ -24,12 +24,6 @@ public class BookService {
         return repository.save(book);
     }
 
-
-
-
-
-
-
     // 특정 레코드 가져오기
     public Book getById(Long id) {
         Optional<Book> optional = repository.findById(id);
